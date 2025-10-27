@@ -4,8 +4,10 @@
  */
 package desafiosjava;
 
+import javax.swing.SwingUtilities;
+
 public class DesafiosJava {
     public static void main(String[] args) {
-        // Main limpio listo para nuevos desafíos
+        SwingUtilities.invokeLater(() -> new Desafio10().setVisible(true));
     }
 }
