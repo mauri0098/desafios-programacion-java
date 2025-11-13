@@ -18,20 +18,36 @@ public class DesafiosJava {
                         JOptionPane.QUESTION_MESSAGE,
                         null,
                         opciones,
-                        "9"
+                        "8"
                 );
 
                 if (sel == null) return;
                 int n = Integer.parseInt(sel);
 
                 String base = DesafiosJava.class.getPackageName(); // "desafiosjava"
+                String suf  = String.valueOf(n);                   // "8", "9", "10"
+                String suf2 = (n < 10 ? "0" + n : suf);            // "08", "09", "10"
 
-                // Candidatos posibles:
-                // 1) desafíos dentro de subpaquete:  desafiosjava.Desafio8.Desafio8
-                // 2) clase directa en el paquete base: desafiosjava.Desafio8
+                // Probamos varias posibles rutas según cómo estén nombrados los paquetes
                 String[] candidatos = new String[] {
-                        base + ".Desafio" + n + ".Desafio" + n, // ej: desafiosjava.Desafio8.Desafio8
-                        base + ".Desafio" + n                    // ej: desafiosjava.Desafio8
+                        // Ej: desafiosjava.Desafio8.Desafio8
+                        base + ".Desafio" + suf + ".Desafio" + suf,
+                        // Ej: desafiosjava.Desafio8
+                        base + ".Desafio" + suf,
+
+                        // Ej: desafiosjava.Desafio08.Desafio8
+                        base + ".Desafio" + suf2 + ".Desafio" + suf,
+                        // Ej: desafiosjava.Desafio08
+                        base + ".Desafio" + suf2,
+
+                        // Ej: desafiosjava.desafio8.Desafio8
+                        base + ".desafio" + suf + ".Desafio" + suf,
+                        // Ej: desafiosjava.desafio08.Desafio8
+                        base + ".desafio" + suf2 + ".Desafio" + suf,
+                        // Ej: desafiosjava.desafio8
+                        base + ".desafio" + suf,
+                        // Ej: desafiosjava.desafio08
+                        base + ".desafio" + suf2
                 };
 
                 Class<?> clase = null;
