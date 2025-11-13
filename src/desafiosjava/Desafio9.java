@@ -33,17 +33,17 @@ public class Desafio9 {
     private static JPanel crearCalculadora() {
         JPanel root = new JPanel(new BorderLayout(8, 8));
 
-        // Panel superior: display
+        
         JTextField display = new JTextField();
         display.setEditable(false);
         display.setHorizontalAlignment(JTextField.RIGHT);
         display.setFont(new Font("SansSerif", Font.BOLD, 22));
         root.add(display, BorderLayout.NORTH);
 
-        // Estado de la calculadora
-        final String[] operador = {null};   // "+", "-", "*", "/"
-        final double[] acumulado = {0};     // operando 1
-        final boolean[] limpiando = {false}; // limpiar display en el próximo dígito
+        
+        final String[] operador = {null};   
+        final double[] acumulado = {0};     
+        final boolean[] limpiando = {false}; 
 
         // Panel central: números 0-9
         JPanel pnlNumeros = new JPanel(new GridLayout(4, 3, 6, 6));
@@ -57,12 +57,12 @@ public class Desafio9 {
             });
             pnlNumeros.add(btn);
         }
-        // Relleno para que queden 4x3 prolijos
+        
         pnlNumeros.add(new JLabel(""));
         pnlNumeros.add(new JLabel(""));
         root.add(pnlNumeros, BorderLayout.CENTER);
 
-        // Panel inferior: operaciones (+ - * /) y "="
+        
         JPanel pnlOps = new JPanel(new GridLayout(1, 5, 6, 6));
         String[] ops = {"+","-","*","/","="};
         for (String op : ops) {
@@ -71,13 +71,13 @@ public class Desafio9 {
             b.addActionListener(e -> {
                 try {
                     if (!"=".equals(op)) {
-                        // Guardar operando 1 y operador
+                       
                         double valorActual = display.getText().isEmpty() ? 0 : Double.parseDouble(display.getText());
                         acumulado[0] = valorActual;
                         operador[0] = op;
-                        limpiando[0] = true; // cuando toquen un número, se limpia
+                        limpiando[0] = true; 
                     } else {
-                        // Resolver
+                        
                         if (operador[0] == null) return;
                         double op2 = display.getText().isEmpty() ? 0 : Double.parseDouble(display.getText());
                         double res;

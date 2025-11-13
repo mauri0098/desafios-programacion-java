@@ -24,28 +24,57 @@ public class DesafiosJava {
                 if (sel == null) return;
                 int n = Integer.parseInt(sel);
 
-                // Clase principal a buscar
-                String nombreClase = "desafiosjava.Desafio" + n;
+                String base = DesafiosJava.class.getPackageName(); // "desafiosjava"
 
-                Class<?> clase = Class.forName(nombreClase);
+                // Candidatos posibles:
+                // 1) desafíos dentro de subpaquete:  desafiosjava.Desafio8.Desafio8
+                // 2) clase directa en el paquete base: desafiosjava.Desafio8
+                String[] candidatos = new String[] {
+                        base + ".Desafio" + n + ".Desafio" + n, // ej: desafiosjava.Desafio8.Desafio8
+                        base + ".Desafio" + n                    // ej: desafiosjava.Desafio8
+                };
 
-                // Caso 1: tiene un main propio
+                Class<?> clase = null;
+                String elegido = null;
+
+                for (String fqcn : candidatos) {
+                    try {
+                        clase = Class.forName(fqcn);
+                        elegido = fqcn;
+                        break;
+                    } catch (ClassNotFoundException | NoClassDefFoundError ignore) {
+                        // probamos el siguiente
+                    }
+                }
+
+                if (clase == null) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "No encontré la clase del desafío " + n,
+                            "Clase no encontrada",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    return;
+                }
+
+                // 1) Intentar ejecutar main(...)
                 try {
                     Method main = clase.getMethod("main", String[].class);
                     main.invoke(null, (Object) new String[] {});
                     return;
                 } catch (NoSuchMethodException ignore) {
-                    // Si no tiene main seguimos al plan B
+                    // si no tiene main, seguimos al plan B
                 }
 
-                // Caso 2: es una ventana o componente Swing
+                // 2) Intentar mostrarlo como ventana / componente Swing
                 Constructor<?> ctor = clase.getDeclaredConstructor();
                 Object instancia = ctor.newInstance();
 
                 if (instancia instanceof java.awt.Window w) {
+                    w.setLocationRelativeTo(null);
                     w.setVisible(true);
                 } else if (instancia instanceof JComponent comp) {
-                    JFrame f = new JFrame("Desafío " + n);
+                    JFrame f = new JFrame("Desafío " + n + " (" + elegido + ")");
                     f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     f.setContentPane(comp);
                     f.pack();
@@ -54,21 +83,25 @@ public class DesafiosJava {
                 } else {
                     JOptionPane.showMessageDialog(
                             null,
-                            "La clase " + nombreClase + " no tiene main() ni es una ventana.",
+                            "La clase " + elegido + " no tiene main() ni es una ventana.",
                             "No se pudo abrir",
                             JOptionPane.ERROR_MESSAGE
                     );
                 }
 
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null,
+                JOptionPane.showMessageDialog(
+                        null,
                         "Error cargando desafío:\n" + e,
                         "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.ERROR_MESSAGE
+                );
                 e.printStackTrace();
             }
         });
     }
 }
+
+
 
 
