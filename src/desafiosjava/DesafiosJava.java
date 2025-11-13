@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package desafiosjava;
 
 import javax.swing.*;
@@ -10,50 +6,69 @@ import java.lang.reflect.Method;
 
 public class DesafiosJava {
 
-    // Cambiá este valor para abrir 8, 9 o 10
-    private static final int DESAFIO_ACTUAL = 10;
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                String nombreClase = DesafiosJava.class.getPackageName() + ".Desafio" + DESAFIO_ACTUAL;
+                // Opciones de desafíos disponibles
+                String[] opciones = {"8", "9", "10", "11"};
+                String sel = (String) JOptionPane.showInputDialog(
+                        null,
+                        "Seleccioná el desafío a ejecutar:",
+                        "Launcher de Desafíos",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        "9"
+                );
+
+                if (sel == null) return;
+                int n = Integer.parseInt(sel);
+
+                // Clase principal a buscar
+                String nombreClase = "desafiosjava.Desafio" + n;
+
                 Class<?> clase = Class.forName(nombreClase);
 
-                // 1) Intentar ejecutar el main(String[]) de la clase del desafío
+                // Caso 1: tiene un main propio
                 try {
                     Method main = clase.getMethod("main", String[].class);
-                    main.invoke(null, (Object) new String[]{}); // llama al main estático
-                    return; // listo
+                    main.invoke(null, (Object) new String[] {});
+                    return;
                 } catch (NoSuchMethodException ignore) {
-                    // Si no tiene main, pasamos al plan B
+                    // Si no tiene main seguimos al plan B
                 }
 
-                // 2) Plan B: instanciar la clase (si extiende JFrame/JDialog/Window)
+                // Caso 2: es una ventana o componente Swing
                 Constructor<?> ctor = clase.getDeclaredConstructor();
                 Object instancia = ctor.newInstance();
 
-                if (instancia instanceof java.awt.Window) {
-                    ((java.awt.Window) instancia).setVisible(true);
-                } else if (instancia instanceof JComponent) {
-                    JFrame f = new JFrame("Desafío " + DESAFIO_ACTUAL);
+                if (instancia instanceof java.awt.Window w) {
+                    w.setVisible(true);
+                } else if (instancia instanceof JComponent comp) {
+                    JFrame f = new JFrame("Desafío " + n);
                     f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    f.setContentPane((JComponent) instancia);
+                    f.setContentPane(comp);
                     f.pack();
                     f.setLocationRelativeTo(null);
                     f.setVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                        "La clase " + nombreClase + " no tiene main() ni es una ventana/componente.",
-                        "No se pudo abrir", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "La clase " + nombreClase + " no tiene main() ni es una ventana.",
+                            "No se pudo abrir",
+                            JOptionPane.ERROR_MESSAGE
+                    );
                 }
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null,
-                    "No se pudo abrir el Desafío " + DESAFIO_ACTUAL + ":\n" + e,
-                    "Error", JOptionPane.ERROR_MESSAGE);
+                        "Error cargando desafío:\n" + e,
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         });
     }
 }
+
 
