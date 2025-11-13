@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package desafiosjava;
+package desafiosjava.Desafio10;
 
 /**
  *
@@ -10,6 +10,17 @@ package desafiosjava;
  */
 
 
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
+
+/**
+ *
+ * @author jose9
+ */
 
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
@@ -197,3 +208,4 @@ public class Desafio10 extends JFrame {
         SwingUtilities.invokeLater(() -> new Desafio10().setVisible(true));
     }
 }
+
