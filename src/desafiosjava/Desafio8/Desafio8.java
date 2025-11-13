@@ -40,7 +40,7 @@ public class Desafio8 extends javax.swing.JFrame {
         btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Actividad 8");
+        setTitle("Desafio 8");
 
         lblNombreCompleto.setText("Nombre completo:");
 
